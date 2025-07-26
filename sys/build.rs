@@ -314,6 +314,7 @@ where
     println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
     println!("cargo:warning=HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
 
+    let mut cflags = vec![];
     // let mut cflags = vec![format!("--target={}", target)];
     cflags.append(&mut add_cflags);
 
