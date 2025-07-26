@@ -93,6 +93,8 @@ fn main() {
     #[cfg(feature = "logging")]
     pretty_env_logger::init();
 
+    println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
     let features = [
         "bindgen",
         "update-bindings",
@@ -261,6 +263,8 @@ where
     V: AsRef<str> + 'a,
 {
     let target = env::var("TARGET").unwrap();
+    println!("cargo:warning=(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
 
     if !Path::new("./")
         .join("src")
@@ -302,6 +306,8 @@ where
     let target = env::var("TARGET").unwrap();
     let out_dir = out_dir.as_ref();
     let header_file = header_file.as_ref();
+    println!("cargo:warning=(bindgen=true)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
 
     let mut cflags = vec![format!("--target={}", target)];
     cflags.append(&mut add_cflags);
