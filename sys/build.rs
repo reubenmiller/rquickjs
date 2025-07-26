@@ -95,6 +95,8 @@ fn main() {
 
     println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
     println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
     let features = [
         "bindgen",
         "update-bindings",
@@ -307,9 +309,12 @@ where
     let out_dir = out_dir.as_ref();
     let header_file = header_file.as_ref();
     println!("cargo:warning=(bindgen=true)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
     println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
 
-    let mut cflags = vec![format!("--target={}", target)];
+    // let mut cflags = vec![format!("--target={}", target)];
     cflags.append(&mut add_cflags);
 
     //format!("-I{}", out_dir.parent().display()),
@@ -324,7 +329,7 @@ where
 
     let mut builder = bindgen_rs::Builder::default()
         .use_core()
-        .detect_include_paths(true)
+        // .detect_include_paths(true)
         .clang_arg("-xc")
         .clang_arg("-v")
         .clang_args(cflags)
