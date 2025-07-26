@@ -93,6 +93,22 @@ fn main() {
     #[cfg(feature = "logging")]
     pretty_env_logger::init();
 
+    // On behalf of clang_sys, rebuild ourselves if important configuration
+    // variables change, to ensure that bindings get rebuilt if the
+    // underlying libclang changes.
+    println!("cargo:rerun-if-env-changed=LLVM_CONFIG_PATH");
+    println!("cargo:rerun-if-env-changed=LIBCLANG_PATH");
+    println!("cargo:rerun-if-env-changed=LIBCLANG_STATIC_PATH");
+    println!("cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS");
+    println!(
+        "cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS_{}",
+        std::env::var("TARGET").unwrap()
+    );
+    println!(
+        "cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS_{}",
+        std::env::var("TARGET").unwrap().replace("-", "_")
+    );
+
     println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
     println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
     println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
@@ -264,7 +280,7 @@ where
     K: AsRef<str> + 'a,
     V: AsRef<str> + 'a,
 {
-    let target = env::var("TARGET").unwrap();
+    let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
     println!("cargo:warning=(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
     println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
 
