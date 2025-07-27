@@ -109,6 +109,13 @@ fn main() {
         std::env::var("TARGET").unwrap().replace("-", "_")
     );
 
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: TARGET={}", std::env::var("TARGET").unwrap_or_default());
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: HOST={}", std::env::var("HOST").unwrap_or_default());
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: CARGO_CFG_TARGET_OS={}", std::env::var("CARGO_CFG_TARGET_OS").unwrap_or_default());
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: CARGO_CFG_TARGET_ENV={}", std::env::var("CARGO_CFG_TARGET_ENV").unwrap_or_default());
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: CFLAGS={}", std::env::var("CFLAGS").unwrap_or_default());
+    println!("rquickjs-sys/build.rs: QUICKJSDEBUG: BINDGEN_EXTRA_CLANG_ARGS={}", std::env::var("BINDGEN_EXTRA_CLANG_ARGS").unwrap_or_default());
+
     println!("cargo:warning=QUICKJSDEBUG: TARGET={}", env::var("TARGET").unwrap());
     println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
     println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
