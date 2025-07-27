@@ -109,10 +109,10 @@ fn main() {
         std::env::var("TARGET").unwrap().replace("-", "_")
     );
 
-    println!("cargo:warning=QUICKJSDEBUG: TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG: HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
     let features = [
         "bindgen",
         "update-bindings",
@@ -283,8 +283,8 @@ where
     V: AsRef<str> + 'a,
 {
     let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG: (bindgen=false)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG-(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG-CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
 
     if !Path::new("./")
         .join("src")
@@ -326,11 +326,11 @@ where
     let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
     let out_dir = out_dir.as_ref();
     let header_file = header_file.as_ref();
-    println!("cargo:warning=QUICKJSDEBUG: (bindgen=true)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG: TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG: HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- (bindgen=true)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG- TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
 
     let mut cflags = vec![];
     // let mut cflags = vec![format!("--target={}", target)];
