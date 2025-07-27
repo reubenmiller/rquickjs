@@ -200,8 +200,6 @@ fn main() {
     }
 
     let mut bindgen_cflags = vec![];
-    let binary_target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
-    bindgen_cflags.push(format!("--target={}", binary_target));
 
     if target_os == "windows" {
         if target_env == "msvc" {
