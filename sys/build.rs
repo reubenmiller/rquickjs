@@ -213,7 +213,7 @@ fn main() {
             env::set_var("CFLAGS", "-DWIN32_LEAN_AND_MEAN -std=c11");
         }
     }
-    defines.push(("__STDC_NO_ATOMICS__".into(), Some("1")));
+    // defines.push(("__STDC_NO_ATOMICS__".into(), Some("1")));
 
     if target_os == "wasi" {
         // pretend we're emscripten - there are already ifdefs that match
