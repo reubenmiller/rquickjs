@@ -214,6 +214,7 @@ fn main() {
         }
     } else {
         env::set_var("CFLAGS", "-std=c11");
+        bindgen_cflags.push(format!("-std=c11"));
     }
 
     if target_os == "wasi" {
