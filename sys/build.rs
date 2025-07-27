@@ -364,7 +364,7 @@ where
     if let Ok(extra_clang_args) = std::env::var("BINDGEN_EXTRA_CLANG_ARGS") {
         for arg in extra_clang_args.split_whitespace() {
             if arg.starts_with("--target=") && !cflags.iter().any(|f| f == arg) {
-                println!("cargo:warning=QUICKJSDEBUG: Parsed --target from BINDGEN_EXTRA_CLANG_ARGS: {}", arg.to_string());
+                println!("cargo:warning=QUICKJSDEBUG: Parsed --target from bindgen func BINDGEN_EXTRA_CLANG_ARGS: {}", arg.to_string());
                 cflags.push(arg.to_string());
             }
         }
