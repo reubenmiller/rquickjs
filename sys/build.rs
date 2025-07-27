@@ -96,6 +96,7 @@ fn main() {
     // On behalf of clang_sys, rebuild ourselves if important configuration
     // variables change, to ensure that bindings get rebuilt if the
     // underlying libclang changes.
+    println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-env-changed=LLVM_CONFIG_PATH");
     println!("cargo:rerun-if-env-changed=LIBCLANG_PATH");
     println!("cargo:rerun-if-env-changed=LIBCLANG_STATIC_PATH");
