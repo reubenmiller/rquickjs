@@ -212,6 +212,8 @@ fn main() {
         } else {
             env::set_var("CFLAGS", "-DWIN32_LEAN_AND_MEAN -std=c11");
         }
+    } else {
+        env::set_var("CFLAGS", "-std=c11");
     }
 
     if target_os == "wasi" {
