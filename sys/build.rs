@@ -208,6 +208,24 @@ fn main() {
     }
 
     let mut bindgen_cflags = vec![];
+    // Try to extract --target from BINDGEN_EXTRA_CLANG_ARGS if present
+    let mut cc_target: Option<String> = None;
+    if let Ok(extra_clang_args) = std::env::var("BINDGEN_EXTRA_CLANG_ARGS") {
+        for arg in extra_clang_args.split_whitespace() {
+            if let Some(target_val) = arg.strip_prefix("--target=") {
+                cc_target = Some(target_val.to_string());
+                println!("cargo:warning=QUICKJSDEBUG: Parsed --target from BINDGEN_EXTRA_CLANG_ARGS: {}", target_val);
+                // Also add to bindgen_cflags if not already present
+                if !bindgen_cflags.iter().any(|f| f == arg) {
+                    bindgen_cflags.push(arg.to_string());
+                }
+                break;
+            }
+        }
+        if cc_target.is_none() {
+            println!("cargo:warning=QUICKJSDEBUG: No --target found in BINDGEN_EXTRA_CLANG_ARGS");
+        }
+    }
 
     if target_os == "windows" {
         if target_env == "msvc" {
@@ -262,6 +280,10 @@ fn main() {
 
     for (name, value) in &defines {
         builder.define(name, *value);
+    }
+
+    if let Some(ref t) = cc_target {
+        builder.target(t);
     }
 
     for src in &source_files {
@@ -338,7 +360,15 @@ where
     let mut cflags = vec![];
     cflags.append(&mut add_cflags);
 
-    //format!("-I{}", out_dir.parent().display()),
+    // If --target is present in BINDGEN_EXTRA_CLANG_ARGS, add it to cflags if not already present
+    if let Ok(extra_clang_args) = std::env::var("BINDGEN_EXTRA_CLANG_ARGS") {
+        for arg in extra_clang_args.split_whitespace() {
+            if arg.starts_with("--target=") && !cflags.iter().any(|f| f == arg) {
+                println!("cargo:warning=QUICKJSDEBUG: Parsed --target from BINDGEN_EXTRA_CLANG_ARGS: {}", arg.to_string());
+                cflags.push(arg.to_string());
+            }
+        }
+    }
 
     for (name, value) in defines {
         cflags.push(if let Some(value) = value {
