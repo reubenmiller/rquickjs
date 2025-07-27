@@ -211,7 +211,6 @@ fn main() {
             env::set_var("CFLAGS", "-DWIN32_LEAN_AND_MEAN -std=c11");
         }
     }
-    // defines.push(("__STDC_NO_ATOMICS__".into(), Some("1")));
 
     if target_os == "wasi" {
         // pretend we're emscripten - there are already ifdefs that match
@@ -281,9 +280,8 @@ where
     K: AsRef<str> + 'a,
     V: AsRef<str> + 'a,
 {
-    let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG-(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG-CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    let target = env::var("TARGET").unwrap();
+    println!("cargo:warning=QUICKJSDEBUG- using pre-generated bindings");
 
     if !Path::new("./")
         .join("src")
@@ -322,17 +320,12 @@ where
     K: AsRef<str> + 'a,
     V: AsRef<str> + 'a,
 {
-    let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
+    let target = env::var("TARGET").unwrap();
     let out_dir = out_dir.as_ref();
     let header_file = header_file.as_ref();
-    println!("cargo:warning=QUICKJSDEBUG- (bindgen=true)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG- TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG- HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG- generating bindings");
 
-    let mut cflags = vec![];
-    // let mut cflags = vec![format!("--target={}", target)];
+    let mut cflags = vec![format!("--target={}", target)];
     cflags.append(&mut add_cflags);
 
     //format!("-I{}", out_dir.parent().display()),
@@ -347,7 +340,7 @@ where
 
     let mut builder = bindgen_rs::Builder::default()
         .use_core()
-        // .detect_include_paths(true)
+        .detect_include_paths(true)
         .clang_arg("-xc")
         .clang_arg("-v")
         .clang_args(cflags)
