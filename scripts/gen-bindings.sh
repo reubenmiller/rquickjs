@@ -16,13 +16,15 @@ build_target x86_64-unknown-linux-gnu    # c_ulong representative
 build_target x86_64-apple-darwin         # __darwin_size_t representative  
 build_target x86_64-pc-windows-gnu      # c_ulonglong representative
 build_target i686-unknown-linux-gnu      # c_uint (unique)
-build_target arm-unknown-linux-musleabi      # c_uint (unique)
-build_target arm-unknown-linux-musleabihf      # c_uint (unique)
-build_target armv7-unknown-linux-musleabihf      # c_uint (unique)
-build_target armv5te-unknown-linux-musleabi      # c_uint (unique)
-build_target i686-unknown-linux-musl      # c_uint (unique)
-build_target riscv64gc-unknown-linux-gnu      # c_uint (unique)
-build_target riscv64gc-unknown-linux-musl      # c_uint (unique)
+
+build_target i686-unknown-linux-musl
+build_target arm-unknown-linux-musleabi
+build_target arm-unknown-linux-musleabihf
+build_target armv7-unknown-linux-musleabihf
+build_target armv5te-unknown-linux-musleabi
+build_target i686-unknown-linux-musl
+build_target riscv64gc-unknown-linux-gnu
+build_target riscv64gc-unknown-linux-musl
 
 # Copy bindings for targets with same size_t as c_ulong
 copy_bindings x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
