@@ -109,10 +109,10 @@ fn main() {
         std::env::var("TARGET").unwrap().replace("-", "_")
     );
 
-    println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
     let features = [
         "bindgen",
         "update-bindings",
@@ -200,6 +200,8 @@ fn main() {
     }
 
     let mut bindgen_cflags = vec![];
+    let binary_target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
+    bindgen_cflags.push(format!("--target={}", binary_target));
 
     if target_os == "windows" {
         if target_env == "msvc" {
@@ -281,8 +283,8 @@ where
     V: AsRef<str> + 'a,
 {
     let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
-    println!("cargo:warning=(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG:(bindgen=false)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG:CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
 
     if !Path::new("./")
         .join("src")
@@ -321,14 +323,14 @@ where
     K: AsRef<str> + 'a,
     V: AsRef<str> + 'a,
 {
-    let target = env::var("TARGET").unwrap();
+    let target = env::var("TARGET_OVERRIDE").ok().filter(|s| !s.is_empty()).unwrap_or_else(|| env::var("TARGET").unwrap());
     let out_dir = out_dir.as_ref();
     let header_file = header_file.as_ref();
-    println!("cargo:warning=(bindgen=true)TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG:(bindgen=true)TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG:TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG:CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG:CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG:HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
 
     let mut cflags = vec![];
     // let mut cflags = vec![format!("--target={}", target)];
