@@ -368,6 +368,8 @@ where
                 cflags.push(arg.to_string());
             }
         }
+    } else {
+        println!("cargo:warning=QUICKJSDEBUG: Did not parse any --target value from BINDGEN_EXTRA_CLANG_ARGS (in bindgen func)");
     }
 
     for (name, value) in defines {
