@@ -109,10 +109,10 @@ fn main() {
         std::env::var("TARGET").unwrap().replace("-", "_")
     );
 
-    println!("cargo:warning=QUICKJSDEBUG- TARGET={}", env::var("TARGET").unwrap());
-    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG- CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
-    println!("cargo:warning=QUICKJSDEBUG- HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: TARGET={}", env::var("TARGET").unwrap());
+    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_POINTER_WIDTH={}", env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: CARGO_CFG_TARGET_ARCH={}", env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_else(|_| "<not set>".to_string()));
+    println!("cargo:warning=QUICKJSDEBUG: HOST={}", env::var("HOST").unwrap_or_else(|_| "<not set>".to_string()));
     let features = [
         "bindgen",
         "update-bindings",
@@ -325,7 +325,9 @@ where
     let header_file = header_file.as_ref();
     println!("cargo:warning=QUICKJSDEBUG- generating bindings");
 
-    let mut cflags = vec![format!("--target={}", target)];
+    // don't explicit set --target as the clang target can be different to the rust target
+    // bindgen will take care of the translation for us
+    let mut cflags = vec![];
     cflags.append(&mut add_cflags);
 
     //format!("-I{}", out_dir.parent().display()),
