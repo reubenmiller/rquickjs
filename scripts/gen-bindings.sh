@@ -3,7 +3,18 @@
 build_target() {
     echo "Generating for $1"
     rustup target add "$1"
-    cargo zigbuild --manifest-path sys/Cargo.toml --features=bindgen,update-bindings,logging --target "$1"
+
+    case "$1" in
+        riscv64gc-*)
+            # clang and rust target names are different for riscv64
+            BINDGEN_EXTRA_CLANG_ARGS="--target=riscv64-unknown-linux-gnu" \
+            cargo zigbuild --manifest-path sys/Cargo.toml --features=bindgen,update-bindings,logging --target "$1"
+            ;;
+        *)
+            cargo zigbuild --manifest-path sys/Cargo.toml --features=bindgen,update-bindings,logging --target "$1"
+            ;;
+    esac
+    
 }
 
 copy_bindings() {
@@ -17,6 +28,15 @@ build_target x86_64-apple-darwin         # __darwin_size_t representative
 build_target x86_64-pc-windows-gnu      # c_ulonglong representative
 build_target i686-unknown-linux-gnu      # c_uint (unique)
 build_target wasm32-wasip1
+
+# Additional thin-edge targets
+build_target i686-unknown-linux-musl
+build_target arm-unknown-linux-musleabi
+build_target arm-unknown-linux-musleabihf
+build_target armv7-unknown-linux-musleabihf
+build_target armv5te-unknown-linux-musleabi
+build_target riscv64gc-unknown-linux-gnu
+build_target riscv64gc-unknown-linux-musl
 
 # Copy bindings for targets with same size_t as c_ulong
 copy_bindings x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
