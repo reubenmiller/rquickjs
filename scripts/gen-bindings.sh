@@ -17,6 +17,7 @@ build_target x86_64-apple-darwin         # __darwin_size_t representative
 build_target x86_64-pc-windows-gnu      # c_ulonglong representative
 build_target i686-unknown-linux-gnu      # c_uint (unique)
 build_target wasm32-wasip1
+build_target arm-unknown-linux-musleabi
 
 # Copy bindings for targets with same size_t as c_ulong
 copy_bindings x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
@@ -29,14 +30,15 @@ copy_bindings x86_64-unknown-linux-gnu x86_64-unknown-linux-musl
 copy_bindings x86_64-unknown-linux-gnu riscv64gc-unknown-linux-gnu
 copy_bindings x86_64-unknown-linux-gnu riscv64gc-unknown-linux-musl
 copy_bindings i686-unknown-linux-gnu i686-unknown-linux-musl
-copy_bindings i686-unknown-linux-gnu arm-unknown-linux-musleabi
-copy_bindings i686-unknown-linux-gnu arm-unknown-linux-musleabihf
-copy_bindings i686-unknown-linux-gnu armv7-unknown-linux-musleabihf
-copy_bindings i686-unknown-linux-gnu armv5te-unknown-linux-musleabi
 
 # Copy bindings for targets with same size_t as __darwin_size_t
 copy_bindings x86_64-apple-darwin aarch64-apple-darwin
 
 # Copy bindings for targets with same size_t as c_ulonglong
 copy_bindings x86_64-pc-windows-gnu x86_64-pc-windows-msvc 
-copy_bindings x86_64-pc-windows-gnu aarch64-pc-windows-msvc 
+copy_bindings x86_64-pc-windows-gnu aarch64-pc-windows-msvc
+
+# Copy bindings for arm 32bit targets
+copy_bindings arm-unknown-linux-musleabi arm-unknown-linux-musleabihf
+copy_bindings arm-unknown-linux-musleabi armv7-unknown-linux-musleabihf
+copy_bindings arm-unknown-linux-musleabi armv5te-unknown-linux-musleabi
